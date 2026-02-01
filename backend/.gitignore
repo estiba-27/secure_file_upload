@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+
+.env
+
+storage/accepted/*
+storage/rejected/*
+
+.DS_Store
+
