@@ -36,19 +36,9 @@ This system allows users to securely upload files, automatically validates them 
 
 ---
 
-## Architecture & Data Flow
+## Installation & Setup
 
 ```mermaid
-flowchart LR
-    A[User Upload Form] --> B[Frontend (React)]
-    B --> C[Backend API (FastAPI)]
-    C --> D[Policy Validation Service]
-    D -->|Accepted| E[Accepted Storage Folder]
-    D -->|Rejected| F[Rejected Storage Folder]
-    C --> G[Database / Metadata Store]
-    G --> B[File Table Dashboard]
-
-## Installation & Setup
 ---
 Backend:
 # Clone repository
