@@ -38,7 +38,6 @@ This system allows users to securely upload files, automatically validates them 
 
 ## Installation & Setup
 
-```mermaid
 Backend:
 # Clone repository
 git clone https://github.com/estiba-27/secure-file-upload.git
