@@ -54,6 +54,7 @@ cd ../frontend
 npm install
 npm start
 http://localhost:3000
+
 opa:
 opa run --server --addr :8181 policies/
 
