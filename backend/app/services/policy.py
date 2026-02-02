@@ -4,7 +4,6 @@ policy_rules = {
     "max_file_size": 5 * 1024 * 1024,  # 5 MB
     "allowed_mime_types": ["application/pdf", "image/png", "image/jpeg"],
     "hash_blacklist": [],
-    # Allow letters, digits, underscores, dashes, spaces, parentheses, dots
     "filename_pattern": r"^[\w\s\-\(\)]+(\.[a-zA-Z0-9]+)+$"
 }
 

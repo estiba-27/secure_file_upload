@@ -7,7 +7,7 @@ from typing import List, Optional
 import re
 
 from app.schemas import FileResponse
-from app.services.policy import policy_rules, update_policy  # statically read policy
+from app.services.policy import policy_rules, update_policy  
 
 router = APIRouter(prefix="/api")
 
@@ -33,10 +33,7 @@ def generate_hash(path: str) -> str:
 
 
 def evaluate_policy(input_data: dict) -> dict:
-    """
-    Evaluate policy locally based on policy_rules (static Python check)
-    instead of calling OPA server.
-    """
+
     # Size check
     if input_data["size"] > input_data["max_file_size"]:
         return {"allow": False, "reason": f"File too large. Max: {input_data['max_file_size']} bytes"}
@@ -121,16 +118,7 @@ def get_policy():
 
 @router.post("/policies")
 def set_policy(policy_input: dict):
-    """
-    Update the policy_rules dynamically via API.
-    Example input:
-    {
-        "max_file_size": 10485760,
-        "allowed_mime_types": ["application/pdf"],
-        "hash_blacklist": ["abc123..."],
-        "filename_pattern": "^[\\w\\s\\-()]+(\\.[a-zA-Z0-9]+)+$"
-    }
-    """
+
     update_policy(
         max_file_size=policy_input.get("max_file_size"),
         allowed_mime_types=policy_input.get("allowed_mime_types"),
