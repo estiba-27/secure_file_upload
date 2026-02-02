@@ -57,7 +57,6 @@ http://localhost:3000
 opa:
 opa run --server --addr :8181 policies/
 
----
 
 ## Future Improvements
 
