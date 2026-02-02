@@ -1,39 +1,38 @@
 package fileupload
 
+# Default: reject
 default decision = {"allow": false, "reason": "Policy violation"}
 
-decision = result {
-    allow
-    result := {"allow": true, "reason": ""}
-}
-
-allow {
+# Accept only if all checks pass
+decision = {"allow": true, "reason": ""} {
     valid_size
     valid_mime
     valid_hash
     valid_filename
 }
 
+# File size check
 valid_size {
     input.size <= input.max_file_size
 }
 
+# MIME type check
 valid_mime {
-    input.mime_type == allowed
+    some i
+    input.mime_type == input.allowed_mime_types[i]
 }
 
-allowed = m {
-    m := input.allowed_mime_types[_]
-}
-
+# Hash blacklist check
 valid_hash {
     not input.hash in input.hash_blacklist
 }
 
+# Filename pattern check
 valid_filename {
     re_match(input.filename_pattern, input.filename)
 }
 
+# Detailed failure reasons
 decision = {"allow": false, "reason": reason} {
     not valid_size
     reason := sprintf("File too large. Max allowed: %d bytes", [input.max_file_size])
@@ -53,4 +52,3 @@ decision = {"allow": false, "reason": reason} {
     not valid_filename
     reason := sprintf("Filename does not match pattern: %s", [input.filename_pattern])
 }
-

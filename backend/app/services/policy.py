@@ -4,7 +4,8 @@ policy_rules = {
     "max_file_size": 5 * 1024 * 1024,  # 5 MB
     "allowed_mime_types": ["application/pdf", "image/png", "image/jpeg"],
     "hash_blacklist": [],
-    "filename_pattern": r"^[a-zA-Z0-9_\-]+\.[a-zA-Z0-9]+$"
+    # Allow letters, digits, underscores, dashes, spaces, parentheses, dots
+    "filename_pattern": r"^[\w\s\-\(\)]+(\.[a-zA-Z0-9]+)+$"
 }
 
 def update_policy(
@@ -21,4 +22,3 @@ def update_policy(
         policy_rules["hash_blacklist"] = hash_blacklist
     if filename_pattern is not None:
         policy_rules["filename_pattern"] = filename_pattern
-
