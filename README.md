@@ -39,7 +39,6 @@ This system allows users to securely upload files, automatically validates them 
 ## Installation & Setup
 
 Backend:
-# Clone repository
 git clone https://github.com/estiba-27/secure-file-upload.git
 cd secure-file-upload/backend
 
@@ -50,12 +49,24 @@ pip install -r requirements.txt
 
 uvicorn app.main:app --reload --port 8000
 
-fronteend:
+frontend:
 cd ../frontend
 npm install
 npm start
 http://localhost:3000
-opa
+opa:
 opa run --server --addr :8181 policies/
 
+---
 
+## Future Improvements
+
+Authentication and role-based access control
+
+Virus scanning integration (e.g., ClamAV)
+
+Cloud object storage (S3 / MinIO)
+
+Asynchronous file processing
+
+Audit logging and monitoring
