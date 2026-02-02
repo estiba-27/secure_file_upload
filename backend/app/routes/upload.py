@@ -3,11 +3,11 @@ import os
 import shutil
 import hashlib
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 import re
 
 from app.schemas import FileResponse
-from app.services.policy import policy_rules  # statically read policy
+from app.services.policy import policy_rules, update_policy  # statically read policy
 
 router = APIRouter(prefix="/api")
 
@@ -53,7 +53,7 @@ def evaluate_policy(input_data: dict) -> dict:
     if not re.match(input_data["filename_pattern"], input_data["filename"]):
         return {"allow": False, "reason": f"Filename does not match pattern: {input_data['filename_pattern']}"}
 
-    # If all checks pass
+    # All checks passed
     return {"allow": True, "reason": None}
 
 
@@ -95,11 +95,10 @@ async def upload_file(file: UploadFile = File(...)):
         status = "rejected"
         reason = decision["reason"]
 
-
     record = {
         "filename": file.filename,
-        "size": size_bytes,                     
-        "size_mb": round(size_bytes / (1024 * 1024), 4),  
+        "size": size_bytes,                     # required for Pydantic
+        "size_mb": round(size_bytes / (1024 * 1024), 4),  # optional display
         "hash": file_hash,
         "status": status,
         "reason": reason,
@@ -118,3 +117,24 @@ def list_files():
 @router.get("/policies")
 def get_policy():
     return policy_rules
+
+
+@router.post("/policies")
+def set_policy(policy_input: dict):
+    """
+    Update the policy_rules dynamically via API.
+    Example input:
+    {
+        "max_file_size": 10485760,
+        "allowed_mime_types": ["application/pdf"],
+        "hash_blacklist": ["abc123..."],
+        "filename_pattern": "^[\\w\\s\\-()]+(\\.[a-zA-Z0-9]+)+$"
+    }
+    """
+    update_policy(
+        max_file_size=policy_input.get("max_file_size"),
+        allowed_mime_types=policy_input.get("allowed_mime_types"),
+        hash_blacklist=policy_input.get("hash_blacklist"),
+        filename_pattern=policy_input.get("filename_pattern")
+    )
+    return {"message": "Policy updated successfully", "policy": policy_rules}
