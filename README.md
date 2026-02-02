@@ -43,14 +43,11 @@ Backend:
 git clone https://github.com/estiba-27/secure-file-upload.git
 cd secure-file-upload/backend
 
-# Create virtual environment
 python -m venv venv
 source venv/bin/activate
 
-# Install dependencies
 pip install -r requirements.txt
 
-# Run server
 uvicorn app.main:app --reload --port 8000
 
 fronteend:
